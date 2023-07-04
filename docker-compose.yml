@@ -2,7 +2,7 @@ version: "3.1"
 
 services:
   shieldy:
-    build: .
+    build: shieldy/.
     restart: always
     environment:
       MONGO_SHIELDY_DB: shieldyDB
@@ -25,12 +25,14 @@ services:
       MONGO_SHIELDY_USERNAME: shieldyDBuser
       MONGO_SHIELDY_PASSWORD_FILE: /run/secrets/mongo_shieldy_password
       MONGO_INITDB_DATABASE: shieldyDB
+    ports:
+      - '27017:27017'
     secrets:
       - mongo_admin_password
       - mongo_shieldy_password
     volumes:
       - dbdata:/data/db
-      - ./init-mongo.sh:/docker-entrypoint-initdb.d/init-mongo.sh:ro
+      - ./shieldy/init-mongo.sh:/docker-entrypoint-initdb.d/init-mongo.sh:ro
   wait-dependencies:
     image: willwill/wait-for-it:latest
     depends_on:
@@ -51,10 +53,10 @@ services:
   #     - mongo
 secrets:
   mongo_admin_password:
-    file: .secrets/mongo_admin_password.txt
+    file: ./shieldy/.secrets/mongo_admin_password.txt
   mongo_shieldy_password:
-    file: .secrets/mongo_shieldy_password.txt
+    file: ./shieldy/.secrets/mongo_shieldy_password.txt
   shieldy_token:
-    file: .secrets/shieldy_token.txt
+    file: ./shieldy/.secrets/shieldy_token.txt
 volumes:
   dbdata:

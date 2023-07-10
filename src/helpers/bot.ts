@@ -1,3 +1,5 @@
+import * as dotenv from 'dotenv'
+dotenv.config({ path: `${__dirname}/../../.env` })
 import { Context, Telegraf } from 'telegraf'
 const TelegrafBot = require('telegraf')
 
